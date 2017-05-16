@@ -39,6 +39,7 @@
     "ioredis": "^2.4.0",
     "jpush-sdk": "3.2.0",
     "jsonwebtoken": "5.1.0",
+    "kue": "^0.11.5",
     "loader": "0.1.4",
     "lodash": "3.6.0",
     "log4js": "0.6.26",

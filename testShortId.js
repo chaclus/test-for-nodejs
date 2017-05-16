@@ -33,30 +33,30 @@ for(var i=0;i<10;i++) {
 
 
 
-let IoRedis = require('ioredis');
-let redis = new IoRedis({
+var IoRedis = require('ioredis');
+var redis = new IoRedis({
     host: '192.168.3.30',
     port: 6379,
     password: 'TUTU@live2016'
 });
-let lock = require('redislock').createLock(redis, {
+var lock = require('redislock').createLock(redis, {
     timeout: 10000,
     retries: 10,
     delay: 50
 });
 
 
-let shortid = function (callback) {
-    let self = this;
+var shortid = function (callback) {
+    var self = this;
     self.cb = callback;
 
-    let createShortId = function () {
-        let num = new Array(8);
-        let c;
-        for(let i=0; i<8;i++) {
+    var createShortId = function () {
+        var num = new Array(8);
+        var c;
+        for(var i=0; i<8;i++) {
             num[i] = Math.floor(Math.random() * 9 + (i==0 ? 1: 0) );
             c = num[i];
-            for(let j =0; j < i; j++) {
+            for(var j =0; j < i; j++) {
                 if(num[j] == c) {
                     i--;
                     break
@@ -66,11 +66,11 @@ let shortid = function (callback) {
         return num.toString().replace(/,/g, '');
     };
 
-    let setbit = function (id, callback) {
+    var setbit = function (id, callback) {
         redis.setbit('deelive:shortid', id, 1, callback);
     };
 
-    let getbit = function (id, callback) {
+    var getbit = function (id, callback) {
         redis.getbit('deelive:shortid', id, callback);
     };
 
@@ -80,8 +80,8 @@ let shortid = function (callback) {
             return self.cb(err, null);
         }
 
-        // let id = createShortId();
-        let id = '16238754';
+        // var id = createShortId();
+        var id = '16238754';
         console.log(id);
         getbit(id, function (err, ret) {
             if (err) {
@@ -126,15 +126,15 @@ shortid(function (err, id) {
 
 
 
-let EventProxy = require('eventproxy');
-let RedisLock = function (reids, options) {
+var EventProxy = require('eventproxy');
+var RedisLock = function (reids, options) {
     this._redis = reids;
     this._num = 0;
     this._ep = new EventProxy();
 
     // Iterate over supplied options
     if (options && typeof options === 'object') {
-        for (let key in RedisLock._defaults) {
+        for (var key in RedisLock._defaults) {
             if (key in options) this[key] = options[key];
         }
     }
@@ -175,9 +175,9 @@ var acquireForWait = function (self, key) {
 
 };
 RedisLock.prototype.acquire = function (key, callback) {
-    let self = this;
+    var self = this;
     self._key = key;
-    let num = 0;
+    var num = 0;
 
     acquireForWait(self, key).then(function () {
         self._redis.expire(key, self.timeout);
@@ -188,22 +188,22 @@ RedisLock.prototype.acquire = function (key, callback) {
 };
 
 RedisLock.prototype.release = function (callback) {
-    let self = this;
+    var self = this;
 
     self._locked = false;
     self._redis.expire(self._key, 0);
     callback();
 };
 
-let num = 0;
+var num = 0;
 
 
-let rLock = new RedisLock(redis,{
+var rLock = new RedisLock(redis,{
     timeout: 10, //单位秒
     delay: 50,  //演示时间 单位毫秒
     // retries: 200, // 重试次数
 });
-let test = function (i) {
+var test = function (i) {
     rLock.acquire("rlock_test_test1", function (err) {
         if(err) {
             console.error("rlock err ", err);
@@ -220,7 +220,7 @@ let test = function (i) {
     });
 };
 
-for(let i=0; i<1000;i++) {
+for(var i=0; i<1000;i++) {
     test(i);
 }
 

@@ -2,8 +2,8 @@
  * Created by chaclus on 2017/1/13.
  */
 
-let IoRedis = require('ioredis');
-let redis = new IoRedis({
+var IoRedis = require('ioredis');
+var redis = new IoRedis({
     host: '192.168.3.30',
     port: 6379,
     password: 'TUTU@live2016'
@@ -26,6 +26,6 @@ var exec = function () {
     });
 };
 
-for (let i=0;i<1;i++) {
+for (var i=0;i<1;i++) {
     exec();
 }
